@@ -43,6 +43,11 @@ public class Country {
     public String getName() {
         return name;
     }
+    
+    @Override
+    public String toString() {
+        return getCode()  + "----" + getName();
+    }
 
     /*
      * TODO(Студент): для класса Country переопределить методы equals и hashCode
@@ -58,9 +63,11 @@ public class Country {
      * имеет неверный формат.
      */
     public static Country valueOf(String text) throws ParseException {
-        /*
-         * TODO(Студент): Реализовать метод valueOf класса Country
-         */
-        throw new UnsupportedOperationException("Not implemented yet!");
+        String[] arr = text.split(":");
+        if (arr[0] == "" || arr[1] == "") {
+            throw new ParseException("Wrong fromat " + text, 0);
+        }
+        return new Country(arr[0], arr[1]);
+
     }
 }

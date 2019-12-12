@@ -1,11 +1,18 @@
 package ru.avalon.java.j20.labs.tasks;
 
+import java.io.BufferedReader;
 import ru.avalon.java.j20.labs.Task;
 import ru.avalon.java.j20.labs.models.Country;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Задание №6
@@ -19,10 +26,14 @@ public class Task6 implements Task {
      * {@inheritDoc}
      */
     @Override
-    public void run() throws IOException {
+    public void run() throws IOException, ParseException {
         File input = new File("assets/countries.txt");
         Collection<Country> countries = read(input);
-
+        
+        for( Country c : countries) {
+            System.out.println(c);
+        }
+        
         /*
          * TODO(Студент): Выполнить задание №6
          *
@@ -47,7 +58,20 @@ public class Task6 implements Task {
      * @return коллекция объектов типа {@link Country}
      * @throws IOException в случае ошибки ввода-вывода.
      */
-    private Collection<Country> read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+    private Collection<Country> read(File file) throws IOException, ParseException {
+        try (BufferedReader r = Files.newBufferedReader(Paths.get(file.getAbsolutePath()))) {
+            String line;
+            List<Country> res = new LinkedList();
+            while ((line = r.readLine()) != null) {
+                Country c = Country.valueOf(line);
+                res.add(c);
+            }
+            return res;
+        }
+        //throw new UnsupportedOperationException("Not implement yet!");
+    }
+    
+    public static void main(String[] a) throws IOException, ParseException {
+        new Task6().run();
     }
 }

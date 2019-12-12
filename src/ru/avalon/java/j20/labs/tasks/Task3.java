@@ -1,10 +1,21 @@
 package ru.avalon.java.j20.labs.tasks;
 
+import java.io.BufferedReader;
 import ru.avalon.java.j20.labs.Task;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Задание №3
@@ -52,7 +63,20 @@ public class Task3 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private Collection<String> read(File file) throws IOException {
-        throw new UnsupportedOperationException("Not implement yet!");
+        //throw new UnsupportedOperationException("Not implement yet!");
+        
+        try (InputStream stream = new FileInputStream(file);
+             Reader reader = new InputStreamReader(stream);
+             BufferedReader input = new BufferedReader(reader)){
+            
+            Collection<String> buffer = new LinkedList<>(); //коллекция строк
+            
+            String line;
+            while ((line = input.readLine()) != null) {
+                buffer.add(line); //здесь будут постепенно накапливаться строки
+            }
+            return new ArrayList<>(buffer);
+        }
     }
 
     /**
@@ -66,6 +90,18 @@ public class Task3 implements Task {
      * @throws IOException в случае ошибок ввода-вывода.
      */
     private void write(File file, Collection<String> collection) throws IOException {
-        throw new UnsupportedOperationException("Not implemented yet!");
+        //throw new UnsupportedOperationException("Not implemented yet!");
+        
+        try (OutputStream stream = new FileOutputStream(file);
+            Writer output = new PrintWriter(stream)) {
+            for (String line : collection) {
+                output.write(line);
+                output.write(System.lineSeparator());
+            }
+        }
+    }
+    
+     public static void main(String[] a) throws IOException {
+        new Task3().run();
     }
 }
