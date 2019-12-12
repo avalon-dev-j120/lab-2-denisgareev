@@ -3,6 +3,7 @@ package ru.avalon.java.j20.labs.tasks;
 import ru.avalon.java.j20.labs.Task;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 /**
@@ -35,7 +36,22 @@ public class Task4 implements Task {
      * @param path путь к конфигурации
      * @return новый экземпляр типа {@link Properties}
      */
-    private Properties read(String path) {
-        throw new UnsupportedOperationException("Not implement yet!");
+    private Properties read(String path) throws IOException{
+        //throw new UnsupportedOperationException("Not implement yet!");
+        
+        Properties properties = new Properties();
+        try (InputStream stream = ClassLoader.getSystemResourceAsStream("resources/database.properties")) { //получить ссылку на интересующий ресурс
+            properties.load(stream);
+        }
+        
+        String txt = properties.getProperty("db.postgres.url");
+        
+        System.out.println(txt);
+        
+        return properties;
+    }
+    
+    public static void main(String[] a) throws IOException {
+    new Task4().run();
     }
 }
